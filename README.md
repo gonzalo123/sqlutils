@@ -98,7 +98,7 @@ $connectionParams = [
 
 $dbh = DriverManager::getConnection($connectionParams);
 $dbh->transactional(function ($conn) {
-    Upsert::createFromDBAL($conn)->exec('public.tbupsertexample', [
+    Upsert::createFromDBAL($conn)->exec('PUBLIC.TBUPSERTEXAMPLE', [
         'KEY1' => 'key1',
         'KEY2' => 'key2',
         'KEY3' => 'key3',
