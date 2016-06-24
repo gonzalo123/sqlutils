@@ -1,9 +1,9 @@
 {
-  "name": "gonzalo123/gearman",
+  "name": "gonzalo123/sqlutils",
   "keywords": [
     "sql"
   ],
-  "description": "INSERT or UPDATE",
+  "description": "Sql Utils with PostgreSQL",
   "license": "MIT",
   "authors": [
     {
