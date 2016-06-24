@@ -3,6 +3,8 @@ SqlUtils
 
 Sql utils for PostgreSQL
 
+[![Build Status](https://travis-ci.org/gonzalo123/sqlutils.svg?branch=master)](https://travis-ci.org/gonzalo123/sqlutils)
+
 ## upsert
 How to perform an UPDATE statement or an INSERT statement if row doesn't exits.
 
