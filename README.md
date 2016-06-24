@@ -53,7 +53,7 @@ WHERE
     NOT EXISTS (SELECT 1 FROM upsert);
 ```
 
-### PDO usage example Example
+### PDO usage example
 
 ```php
 use G\SqlUtils\Upsert;
@@ -82,7 +82,7 @@ try {
 }
 ```
 
-### DBAL usage example Example
+### DBAL usage example
 
 ```php
 use Doctrine\DBAL\DriverManager;
