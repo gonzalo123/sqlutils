@@ -24,7 +24,6 @@ services:
   - postgresql
 
 before_script:
-  - sudo /etc/init.d/postgresql restart
   - psql -c 'create database gonzalo;' -U postgres
   - psql -c 'create role username LOGIN;' -U postgres
 
