@@ -4,9 +4,16 @@ use G\SqlUtils\Upsert;
 
 class UpsertTest extends \PHPUnit_Framework_TestCase
 {
+    private $conf = [
+        'dbname'   => 'gonzalo',
+        'host'     => 'localhost',
+        'username' => 'username',
+        'password' => 'password'
+    ];
+
     public function testPDO()
     {
-        $conn = new PDO('pgsql:dbname=gonzalo;host=localhost', 'username', 'password');
+        $conn = new PDO("pgsql:dbname={$this->conf['dbname']};host={$this->conf['host']}", $this->conf['username'], $this->conf['password']);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         $conn->exec(file_get_contents(__DIR__ . '/fixtures/createTable.sql'));
@@ -78,10 +85,10 @@ class UpsertTest extends \PHPUnit_Framework_TestCase
     public function testDBAL()
     {
         $connectionParams = [
-            'dbname'   => 'gonzalo',
-            'user'     => 'username',
-            'password' => 'password',
-            'host'     => 'localhost',
+            'dbname'   => $this->conf['dbname'],
+            'user'     => $this->conf['username'],
+            'password' => $this->conf['password'],
+            'host'     => $this->conf['host'],
             'driver'   => 'pdo_pgsql',
         ];
 

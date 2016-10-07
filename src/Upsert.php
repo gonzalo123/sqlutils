@@ -37,45 +37,44 @@ class Upsert
 
     public function exec($table, $key, $values)
     {
-        $setArr          = [];
-        $whereArr        = [];
-        $insertFieldsArr = [];
-        $selectFieldsArr = [];
-        $params          = [];
-
-        foreach ($values as $k => $v) {
-            $setArr[]          = "{$k} = :{$k}";
-            $insertFieldsArr[] = $k;
-            $selectFieldsArr[] = ":{$k}";
-            $params[$k]        = $v;
-        }
-        $set = implode(", ", $setArr);
+        $insertValues = [];
+        $fields       = [];
+        $keys         = [];
+        $updateSet    = [];
+        $updateWhere  = [];
+        $params       = [];
 
         foreach ($key as $k => $v) {
-            $whereArr[]        = "{$k} = :{$k}";
-            $insertFieldsArr[] = $k;
-            $selectFieldsArr[] = ":{$k}";
-            $params[$k]        = $v;
+            $fields[]       = $k;
+            $insertValues[] = ":{$k}";
+            $keys[]         = $k;
+            $updateWhere[]  = "TBUPSERTEXAMPLE.{$k} = :{$k}";
+            $params[$k]     = $v;
         }
-        $where        = implode(" AND ", $whereArr);
-        $insertFields = implode(", ", $insertFieldsArr);
-        $selectFields = implode(", ", $selectFieldsArr);
 
-        $sql  = "
-            WITH upsert AS (
-                UPDATE {$table}
-                SET
-                    {$set}
-            WHERE
-                {$where}
-                RETURNING *
-            )
-            INSERT INTO {$table} ({$insertFields})
-            SELECT
-                {$selectFields}
-            WHERE
-                NOT EXISTS (SELECT 1 FROM upsert);
+        foreach ($values as $k => $v) {
+            $fields[]       = $k;
+            $insertValues[] = ":{$k}";
+            $updateSet[]    = "$k = :{$k}";
+            $params[$k]     = $v;
+        }
+
+        $fields       = implode(", ", $fields);
+        $insertValues = implode(", ", $insertValues);
+        $keys         = implode(", ", $keys);
+        $updateSet    = implode(", ", $updateSet);
+        $updateWhere  = implode(" and ", $updateWhere);
+
+        $sql = "
+            insert into {$table} ({$fields})
+              values ({$insertValues})
+            on conflict ({$keys})
+            do update set 
+              {$updateSet}
+            where 
+              {$updateWhere};
         ";
+
         $smtp = $this->connection->prepare($sql);
         $smtp->execute($params);
     }

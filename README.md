@@ -47,10 +47,29 @@ WITH upsert AS (
     RETURNING *
 )
 INSERT INTO PUBLIC.TBUPSERTEXAMPLE(KEY1, KEY2, KEY3, KEY4, VALUE1, VALUE2, VALUE3, VALUE4, VALUE5)
-SELECT
+SELECT``
     :KEY1, :KEY2, :KEY3, :KEY4, :VALUE1, :VALUE2, :VALUE3, :VALUE4, :VALUE5
 WHERE
     NOT EXISTS (SELECT 1 FROM upsert);
+```
+
+But since PostgreSQL 9.5 we also can do 
+
+```sql
+insert into PUBLIC.TBUPSERTEXAMPLE (key1, key2, key3, key4, value1, value2, value3, value4, value5)
+  values (:KEY1, :KEY2, :KEY3, :KEY4, :VALUE1, :VALUE2, :VALUE3, :VALUE4, :VALUE5)
+on conflict (key1, key2, key3, key4)
+do update set 
+  value1 = :VALUE1, 
+  value2 = :VALUE1, 
+  value3 = :VALUE1, 
+  value4 = :VALUE1, 
+  value5 = :VALUE1
+where 
+  TBUPSERTEXAMPLE.key1 = :KEY1 and 
+  TBUPSERTEXAMPLE.key2 = :KEY2 and 
+  TBUPSERTEXAMPLE.key3 = :KEY3 and 
+  TBUPSERTEXAMPLE.key4 = :KEY4;
 ```
 
 ### PDO usage example
