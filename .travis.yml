@@ -9,16 +9,14 @@ php:
 install:
   - composer install
 
-addons:
-  apt:
-    sources:
-    - precise-pgdg-9.5
-    packages:
-    - postgresql-9.5
-    - postgresql-contrib-9.5
-  postgresql: 9.5
-
 script: phpunit --coverage-text
+
+before_install:
+  - wget https://gist.github.com/petere/5893799/raw/apt.postgresql.org.sh
+  - wget https://gist.github.com/petere/6023944/raw/pg-travis-test.sh
+  - sudo sh ./apt.postgresql.org.sh
+env:
+  - PGVERSION=9.5
 
 before_script:
   - psql -c 'create database gonzalo;' -U postgres
