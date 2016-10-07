@@ -20,9 +20,6 @@ addons:
 
 script: phpunit --coverage-text
 
-services:
-  - postgresql
-
 before_script:
   - psql -c 'create database gonzalo;' -U postgres
   - psql -c 'create role username LOGIN;' -U postgres
