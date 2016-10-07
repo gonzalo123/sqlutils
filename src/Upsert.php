@@ -48,7 +48,7 @@ class Upsert
             $fields[]       = $k;
             $insertValues[] = ":{$k}";
             $keys[]         = $k;
-            $updateWhere[]  = "TBUPSERTEXAMPLE.{$k} = :{$k}";
+            $updateWhere[]  = "{$table}.{$k} = :{$k}";
             $params[$k]     = $v;
         }
 
